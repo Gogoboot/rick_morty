@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import s from "./CharacterPage.module.css";
+import {Link} from "react-router";
 
 export const CharacterPage = () => {
     const [characters, setCharacters] = useState([]);
@@ -12,7 +13,7 @@ export const CharacterPage = () => {
         prev: null,
     })
 
-    const [error,setError] = useState(null);
+    const [error, setError] = useState(null);
 
     const fetchData = (url) => {
         axios.get(url).then((res) => {
@@ -49,18 +50,20 @@ export const CharacterPage = () => {
             {error && (<div className="errorMessage">{error}</div>)}
             {!error && characters.length && (
                 <>
-                    {
-                        <div className={s.characters}>
-                            {characters.map((character) => {
-                                return (
-                                    <div key={character.id} className={s.character}>
-                                        <div className={s.characterLink}>{character.name}</div>
-                                        <img src={character.image} alt={`${character.name} avatar`}/>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    }
+                {
+                    <div className={s.characters}>
+                        {characters.map((character) => {
+                            return (
+                                <div key={character.id} className={s.character}>
+                                    <Link to={`/characters/${character.id}`} className={s.characterLink}>
+                                        {character.name}
+                                    </Link>
+                                    <img src={character.image} alt={`${character.name} avatar`}/>
+                                </div>
+                            )
+                        })}
+                    </div>
+                }
                     <div className={s.buttonContainer}>
                         <button className="linkButton" disabled={info.prev === null} onClick={previousPageHandler}>
                             Назад
